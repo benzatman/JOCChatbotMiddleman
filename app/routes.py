@@ -2,6 +2,7 @@ from flask import request, jsonify
 from app import webhook_app
 from .rasa_rest_client import RasaRestClient
 
+
 @webhook_app.route('/', methods=['Get'])
 def about():
     return "<h1 style='color:blue'>Welcome</h1>"
