@@ -4,6 +4,7 @@ import json
 
 app = Flask(__name__, instance_relative_config=False)
 
+application = app
 
 @app.route('/', methods=['Get'])
 def about():
@@ -84,3 +85,5 @@ class RasaRestClient():
         return self.__after_request(resp, url, attempt, 'post', data)
 
 
+if __name__ == "__main__":
+    application.run()
