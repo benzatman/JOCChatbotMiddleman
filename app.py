@@ -1,5 +1,26 @@
-import json
+from flask import Flask, request, jsonify
 import requests
+import json
+
+app = Flask(__name__, instance_relative_config=False)
+
+
+@app.route('/', methods=['Get'])
+def about():
+    return "<h1 style='color:blue'>Welcome</h1>"
+
+@app.route('/messages/', methods=['POST'])
+def messages():
+        sms = request.values
+        message = sms['data']
+        user = sms['From']
+        rc = RasaRestClient(user)
+        response = rc.send_message(message)
+        if 'buttons' in response[0]:
+                response[0].pop('buttons')
+
+        return jsonify(response)
+
 
 rasa_base_url = 'http://18.196.248.121/'
 rasa_user = 'me'
@@ -61,3 +82,5 @@ class RasaRestClient():
                              data=json.dumps(data),
                              headers={'Authorization': f'Bearer {RasaRestClient.token}'})
         return self.__after_request(resp, url, attempt, 'post', data)
+
+
