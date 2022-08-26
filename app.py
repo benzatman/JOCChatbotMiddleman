@@ -6,9 +6,16 @@ app = Flask(__name__, instance_relative_config=False)
 
 application = app
 
-@app.route('/', methods=['Get'])
+
+@app.route('/', methods=['GET'])
 def about():
     return "<h1 style='color:blue'>Welcome</h1>"
+
+
+@app.route('/debug/', methods=['POST'])
+def debug():
+    print("debug")
+
 
 @app.route('/messages/', methods=['POST'])
 def messages():
