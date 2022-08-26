@@ -1,1 +1,1 @@
-from app import webhook_app
+from app import app
