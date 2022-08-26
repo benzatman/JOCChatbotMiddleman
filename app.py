@@ -12,13 +12,19 @@ def about():
 
 @app.route('/messages/', methods=['POST'])
 def messages():
+        print(1)
         sms = request.values
+        print(2)
         message = sms['data']
         user = sms['From']
+        print(3)
         rc = RasaRestClient(user)
+        print(4)
         response = rc.send_message(message)
+        print(5)
         if 'buttons' in response[0]:
                 response[0].pop('buttons')
+        print(6)
 
         return jsonify(response)
 
