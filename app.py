@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from flask_cors import cross_origin
 import requests
 import json
+from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__, instance_relative_config=False)
 
@@ -28,11 +29,11 @@ def messages():
     user = User
     user.phone_number = args.get('From')
     rc = RasaRestClient(user)
-    response = rc.send_message(message)
-    if 'buttons' in response[0]:
-        response[0].pop('buttons')
-
-    return response
+    resp = rc.send_message(message)
+    if 'buttons' in resp[0]:
+        resp[0].pop('buttons')
+    response = MessagingResponse()
+    return response.message(resp)
 
 
 class User():
