@@ -23,7 +23,7 @@ def debug():
 @app.route('/messages', methods=['POST'])
 @cross_origin()
 def messages():
-    args = request.get_json(force=True)
+    args = request.form
     print(args)
     message = args.get('Body')
     user = User
