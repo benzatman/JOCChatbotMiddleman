@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import cross_origin
 import requests
 import json
 
@@ -12,18 +13,20 @@ def about():
     return "<h1 style='color:blue'>Welcome</h1>"
 
 
-@app.route('/debug/', methods=['POST'])
+@app.route('/debug', methods=['POST'])
+@cross_origin()
 def debug():
     print("debug")
 
 
-@app.route('/messages/', methods=['POST'])
+@app.route('/messages', methods=['POST'])
+@cross_origin()
 def messages():
         print(1)
-        sms = request.values
+        sms = request.form
         print(2)
-        message = sms['data']
-        user = sms['From']
+        message = sms['message']
+        user = sms['from']
         print(3)
         rc = RasaRestClient(user)
         print(4)
