@@ -23,8 +23,11 @@ def debug():
 @app.route('/messages', methods=['POST'])
 @cross_origin()
 def messages():
+    print(1)
     args = request.get_json(force=True)
+    print(2)
     message = args['message']
+    print(2.5)
     user = args['phone_number']
     print(3)
     rc = RasaRestClient(user)
