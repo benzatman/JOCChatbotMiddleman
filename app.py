@@ -34,7 +34,7 @@ def messages():
         resp[0].pop('buttons')
 
     response = MessagingResponse()
-    response.message(list(resp))
+    response.message(str(resp))
 
     return str(response)
 
