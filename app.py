@@ -32,7 +32,7 @@ def messages():
     if 'buttons' in resp[0]:
         resp[0].pop('buttons')
 
-    return jsonify(resp)
+    return str(jsonify(resp))
 
 
 class User():
