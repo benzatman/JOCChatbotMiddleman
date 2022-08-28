@@ -59,8 +59,7 @@ class RasaRestClient():
 
     def __init__(self, user):
 
-        self.user = {'phone_number': user, 'conversation_id': ""}
-        self.user.conversation_id = self.user.get('conversation_id')
+        self.user = user
         self.create_conversation_if_needed()
 
     def send_message(self, message):
