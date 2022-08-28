@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from twilio.twiml.messaging_response import MessagingResponse
 from flask_cors import cross_origin
 import requests
 import json
@@ -24,14 +25,15 @@ def debug():
 @cross_origin()
 def messages():
     args = request.form
-    print(args)
     message = args.get('Body')
     user = User
     user.phone_number = args.get('From')
     rc = RasaRestClient(user)
     resp = rc.send_message(message)
+    response = MessagingResponse()
+    response.message(str(resp[0]['text']))
 
-    return resp[0]['text']
+    return str(response)
 
 
 class User():
