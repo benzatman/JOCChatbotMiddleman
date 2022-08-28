@@ -27,9 +27,9 @@ def messages():
     args = request.form
     print(args)
     print(2)
-    message = args.get('message')
+    message = args.get('Body')
     print(2.5)
-    user = args['phone_number']
+    user = args.get('From')
     print(3)
     rc = RasaRestClient(user)
     print(4)
