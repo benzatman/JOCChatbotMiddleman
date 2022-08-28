@@ -29,7 +29,8 @@ def messages():
     print(2)
     message = args.get('Body')
     print(2.5)
-    user = args.get('From')
+    user = User
+    user.phone_number = args.get('From')
     print(3)
     rc = RasaRestClient(user)
     print(4)
@@ -40,6 +41,11 @@ def messages():
     print(6)
 
     return jsonify(response)
+
+
+class User():
+    phone_number = ""
+    conversation_id = ""
 
 
 rasa_base_url = 'http://18.196.248.121/'
