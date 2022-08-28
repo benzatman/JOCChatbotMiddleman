@@ -24,7 +24,8 @@ def debug():
 @cross_origin()
 def messages():
     print(1)
-    args = request.get_json(force=True)
+    args = request.args
+    print(args)
     print(2)
     message = args['message']
     print(2.5)
