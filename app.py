@@ -2,7 +2,6 @@ from flask import Flask, request
 from flask_cors import cross_origin
 import requests
 import json
-from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__, instance_relative_config=False)
 
@@ -32,9 +31,8 @@ def messages():
     resp = rc.send_message(message)
     if 'buttons' in resp[0]:
         resp[0].pop('buttons')
-    response = MessagingResponse()
-    response.message(list(resp))
-    return response
+
+    return list(resp)
 
 
 class User():
