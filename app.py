@@ -17,26 +17,25 @@ def about():
 @cross_origin()
 def debug():
     print("debug")
+    return "debug"
 
 
 @app.route('/messages', methods=['POST'])
 @cross_origin()
 def messages():
-        print(1)
-        sms = request.form
-        print(2)
-        message = sms['message']
-        user = sms['from']
-        print(3)
-        rc = RasaRestClient(user)
-        print(4)
-        response = rc.send_message(message)
-        print(5)
-        if 'buttons' in response[0]:
-                response[0].pop('buttons')
-        print(6)
+    args = request.get_json(force=True)
+    message = args['message']
+    user = args['phone_number']
+    print(3)
+    rc = RasaRestClient(user)
+    print(4)
+    response = rc.send_message(message)
+    print(5)
+    if 'buttons' in response[0]:
+        response[0].pop('buttons')
+    print(6)
 
-        return jsonify(response)
+    return jsonify(response)
 
 
 rasa_base_url = 'http://18.196.248.121/'
