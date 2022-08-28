@@ -33,10 +33,7 @@ def messages():
     if 'buttons' in resp[0]:
         resp[0].pop('buttons')
 
-    response = MessagingResponse()
-    response.message(str(resp))
-
-    return str(response)
+    return resp
 
 
 class User():
@@ -64,7 +61,7 @@ class RasaRestClient():
     def __login(self):
         resp = requests.post(f'{rasa_base_url}/api/auth',
                              data=json.dumps({'username': rasa_user, 'password': rasa_password}),
-                             headers={'Content-type': 'application/json'})
+                             headers={'Content-type': 'application/xml'})
         if resp.ok and 'access_token' in resp.json():
             RasaRestClient.token = resp.json()['access_token']
         else:
