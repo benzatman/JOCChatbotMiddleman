@@ -1,12 +1,45 @@
 from flask import Flask, request
-from twilio.twiml.messaging_response import MessagingResponse
 from flask_cors import cross_origin
 import requests
 import json
+from xml.dom.minidom import Document
 
 app = Flask(__name__, instance_relative_config=False)
 
 application = app
+
+
+class dict2xml(object):
+    doc = Document()
+
+    def __init__(self, structure):
+        if len(structure) == 1:
+            rootName = str(structure.keys()[0])
+            self.root = self.doc.createElement(rootName)
+
+            self.doc.appendChild(self.root)
+            self.build(self.root, structure[rootName])
+
+    def build(self, father, structure):
+        if type(structure) == dict:
+            for k in structure:
+                tag = self.doc.createElement(k)
+                father.appendChild(tag)
+                self.build(tag, structure[k])
+
+        elif type(structure) == list:
+            grandFather = father.parentNode
+            tagName = father.tagName
+            grandFather.removeChild(father)
+            for l in structure:
+                tag = self.doc.createElement(tagName)
+                self.build(tag, l)
+                grandFather.appendChild(tag)
+
+        else:
+            data = str(structure)
+            tag = self.doc.createTextNode(data)
+            father.appendChild(tag)
 
 
 @app.route('/', methods=['GET'])
@@ -33,7 +66,9 @@ def messages():
     if 'buttons' in resp[0]:
         resp[0].pop('buttons')
 
-    return resp
+    dict_resp = json.dumps(resp)
+    xml = dict2xml(dict_resp)
+    return xml
 
 
 class User():
@@ -61,7 +96,7 @@ class RasaRestClient():
     def __login(self):
         resp = requests.post(f'{rasa_base_url}/api/auth',
                              data=json.dumps({'username': rasa_user, 'password': rasa_password}),
-                             headers={'Content-type': 'application/xml'})
+                             headers={'Content-type': 'application/json'})
         if resp.ok and 'access_token' in resp.json():
             RasaRestClient.token = resp.json()['access_token']
         else:
