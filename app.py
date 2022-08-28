@@ -32,7 +32,7 @@ def messages():
     if 'buttons' in resp[0]:
         resp[0].pop('buttons')
 
-    return str(json.dumps(resp))
+    return resp.decode("utf-8")
 
 
 class User():
