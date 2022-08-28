@@ -23,29 +23,21 @@ def debug():
 @app.route('/messages', methods=['POST'])
 @cross_origin()
 def messages():
-    print(1)
     args = request.form
-    print(args)
-    print(2)
     message = args.get('Body')
-    print(2.5)
     user = User
     user.phone_number = args.get('From')
-    print(3)
     rc = RasaRestClient(user)
-    print(4)
     response = rc.send_message(message)
-    print(5)
     if 'buttons' in response[0]:
         response[0].pop('buttons')
-    print(6)
 
-    return jsonify(response)
+    return response
 
 
 class User():
     phone_number = ""
-    conversation_id = ""
+    conversation_id = "3593b9d650a54d8a8093d247ed1e9cdc"
 
 
 rasa_base_url = 'http://18.196.248.121/'
@@ -60,21 +52,10 @@ class RasaRestClient():
     def __init__(self, user):
 
         self.user = user
-        self.create_conversation_if_needed()
 
     def send_message(self, message):
         return self.__post(f'/api/conversations/{self.user.conversation_id}/messages',
                            data={"message": message})
-
-    def create_conversation_if_needed(self):
-        conversation_id = self.__setup_new_conversation()
-        self.user.conversation_id = conversation_id
-
-    def __setup_new_conversation(self):
-        resp = self.__post('/api/conversations', data={})
-        sender_id = resp['sender_id']
-
-        return sender_id
 
     def __login(self):
         resp = requests.post(f'{rasa_base_url}/api/auth',
