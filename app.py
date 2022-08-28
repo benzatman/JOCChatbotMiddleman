@@ -24,10 +24,10 @@ def debug():
 @cross_origin()
 def messages():
     print(1)
-    args = request.args
+    args = request.form
     print(args)
     print(2)
-    message = args['message']
+    message = args.get('message')
     print(2.5)
     user = args['phone_number']
     print(3)
