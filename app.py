@@ -33,7 +33,7 @@ def messages():
     if 'buttons' in resp[0]:
         resp[0].pop('buttons')
     response = MessagingResponse()
-    response.message(json.loads(resp))
+    response.message(resp)
     return response
 
 
