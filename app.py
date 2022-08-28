@@ -30,10 +30,8 @@ def messages():
     user.phone_number = args.get('From')
     rc = RasaRestClient(user)
     resp = rc.send_message(message)
-    if 'buttons' in resp[0]:
-        resp[0].pop('buttons')
 
-    return jsonify(resp)
+    return resp[0]['text']
 
 
 class User():
