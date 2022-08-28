@@ -32,7 +32,7 @@ def messages():
     if 'buttons' in resp[0]:
         resp[0].pop('buttons')
 
-    return resp.encode()
+    return str(resp).encode()
 
 
 class User():
