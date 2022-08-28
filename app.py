@@ -23,7 +23,8 @@ def debug():
 @app.route('/messages', methods=['POST'])
 @cross_origin()
 def messages():
-    args = request.form
+    args = request.get_json(force=True)
+    print(args)
     message = args.get('Body')
     user = User
     user.phone_number = args.get('From')
@@ -32,7 +33,7 @@ def messages():
     if 'buttons' in resp[0]:
         resp[0].pop('buttons')
 
-    return str(resp).encode()
+    return jsonify(resp)
 
 
 class User():
