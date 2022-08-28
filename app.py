@@ -33,7 +33,8 @@ def messages():
     if 'buttons' in resp[0]:
         resp[0].pop('buttons')
     response = MessagingResponse()
-    return str(response.message(str(resp)))
+    response.message(str(resp))
+    return str(response)
 
 
 class User():
