@@ -3,6 +3,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 from flask_cors import cross_origin
 import requests
 import json
+from decouple import config
 
 app = Flask(__name__, instance_relative_config=False)
 
@@ -41,9 +42,9 @@ class User():
     conversation_id = "3593b9d650a54d8a8093d247ed1e9cdc"
 
 
-rasa_base_url = 'http://18.196.248.121/'
-rasa_user = 'me'
-rasa_password = 'Chesed613'
+rasa_base_url = config('rasa_base_url')
+rasa_user = config('rasa_user')
+rasa_password = config('rasa_password')
 
 
 class RasaRestClient():
