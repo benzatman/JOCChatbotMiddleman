@@ -36,7 +36,6 @@ def messages():
     for r in range(len(resp)):
         res += resp[r]['text']
 
-    print(res)
     response = MessagingResponse()
     response.message(str(res))
 
