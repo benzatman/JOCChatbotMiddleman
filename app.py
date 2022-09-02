@@ -32,9 +32,13 @@ def messages():
     user.phone_number = args.get('From')
     rc = RasaRestClient(user)
     resp = rc.send_message(message)
-    print(resp)
+    res = ""
+    for r in range(len(resp)):
+        res += resp[r]['text']
+
+    print(res)
     response = MessagingResponse()
-    response.message(str(resp[0]['text']))
+    response.message(str(res))
 
     return str(response)
 
