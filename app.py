@@ -5,6 +5,7 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+from decouple import config
 
 app = Flask(__name__, instance_relative_config=False)
 
@@ -46,12 +47,15 @@ class User():
     phone_number = ""
     conversation_id = "3593b9d650a54d8a8093d247ed1e9cdc"
 
-
+"""
 load_dotenv()
 rasa_base_url = os.getenv('rasa_base_url')
 rasa_user = os.getenv('rasa_user')
 rasa_password = os.getenv('rasa_password')
-
+"""
+rasa_base_url = config('rasa_base_url')
+rasa_user = config('rasa_user')
+rasa_password = config('rasa_password')
 
 class RasaRestClient():
 
