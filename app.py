@@ -5,7 +5,7 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
-from decouple import config
+
 
 app = Flask(__name__, instance_relative_config=False)
 
