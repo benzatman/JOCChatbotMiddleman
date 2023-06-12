@@ -5,6 +5,9 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+import pandas as pd
+import pickle
+from datetime import date, datetime, time, timedelta
 
 
 app = Flask(__name__, instance_relative_config=False)
@@ -30,12 +33,34 @@ def messages():
     args = request.form
     message = args.get('Body')
     user = User
-    user.phone_number = args.get('From')
-    rc = RasaRestClient(user)
-    resp = rc.send_message(message)
-    res = ""
-    for r in range(len(resp)):
-        res += resp[r]['text']
+    user.phone_number, phone_number = args.get('From')
+    with open('last_active.pkl', 'rb') as handle:
+        df = pickle.load(handle)
+    if phone_number in df['phone#']:
+        idx = df['phone#'].get_loc(phone_number)
+        last_active = df['last_active'][idx]
+        if datetime.now() - last_active > timedelta(minutes=15):
+            res = "Hey! Welcome to the Just One Chesed ChesedMatch ChatBot. \n" \
+               "Please answer a few questions so we can help you the best we can." \
+               " You can write 'start over' at any point to go back to the main menu. \n" \
+               "Let's get started, select what country you are from from the options below:"
+        else:
+            rc = RasaRestClient(user)
+            resp = rc.send_message(message)
+            res = ''
+            for r in range(len(resp)):
+                res += resp[r]['text']
+        df['last_active'][idx] = datetime.now()
+    else:
+        df.loc[len(df.index)] = [phone_number, datetime.now()]
+        rc = RasaRestClient(user)
+        resp = rc.send_message(message)
+        res = ""
+        for r in range(len(resp)):
+            res += resp[r]['text']
+
+    with open('last_active.pkl', 'wb') as handle:
+        pickle.dump(df, handle)
 
     response = MessagingResponse()
     response.message(str(res))
