@@ -33,7 +33,8 @@ def messages():
     args = request.form
     message = args.get('Body')
     user = User
-    user.phone_number, phone_number = args.get('From')
+    user.phone_number = args.get('From')
+    phone_number = args.get('From')
     with open('last_active.pkl', 'rb') as handle:
         df = pickle.load(handle)
     if phone_number in df['phone#']:
