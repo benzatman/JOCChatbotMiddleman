@@ -35,7 +35,7 @@ def messages():
     user = User
     user.phone_number = args.get('From')
     phone_number = args.get('From')
-    with open('last_active.pkl', 'rb') as handle:
+    with open('JOCChatbotMiddleman/last_active.pkl', 'rb') as handle:
         df = pickle.load(handle)
     if phone_number in df['phone#']:
         idx = df['phone#'].get_loc(phone_number)
