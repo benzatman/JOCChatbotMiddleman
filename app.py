@@ -66,7 +66,7 @@ def messages():
         now = str(datetime.now())
         index = now.find('.')
         current_time = now[:index]
-        sheet.update_cell(idx, 2, current_time)
+        sheet.update_cell(idx + 1, 2, current_time)
     else:
         now = str(datetime.now())
         index = now.find('.')
