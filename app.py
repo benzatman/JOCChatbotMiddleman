@@ -52,7 +52,7 @@ def messages():
     if phone_number in phone_col:
         idx = phone_col.index(phone_number)
         last_active = sheet.cell(idx, 2).value
-        if datetime.now() - datetime. strptime(last_active) > timedelta(minutes=15):
+        if datetime.now() - datetime.strptime(last_active) > timedelta(minutes=15):
             res = "Hey! Welcome to the Just One Chesed ChesedMatch ChatBot. \n" \
                "Please answer a few questions so we can help you the best we can." \
                " You can write 'start over' at any point to go back to the main menu. \n" \
