@@ -65,7 +65,7 @@ def messages():
                 res += resp[r]['text']
         sheet.update_cell(idx, 2, datetime.now())
     else:
-        sheet.insert_row([phone_number, f'{datetime.now()}'], values + 1)
+        sheet.insert_row([phone_number, str(datetime.now())], values + 1)
         rc = RasaRestClient(user)
         resp = rc.send_message(message)
         res = ""
