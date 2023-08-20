@@ -21,7 +21,7 @@ scope = [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/drive.file'
     ]
-file_name = 'JOCChatbotMiddleman\jocchatbot-7fdc3c134776.json'
+file_name = '/home/ubuntu/JOCChatbotMiddleman/jocchatbot-7fdc3c134776.json'
 creds = ServiceAccountCredentials.from_json_keyfile_name(file_name,scope)
 client = gspread.authorize(creds)
 
