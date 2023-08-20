@@ -51,7 +51,7 @@ def messages():
     values = len(phone_col)
     if phone_number in phone_col:
         idx = phone_col.index(phone_number)
-        last_active = sheet.cell(idx, 2).value
+        last_active = sheet.cell(idx + 1, 2).value
         if datetime.now() - datetime.strptime(last_active, "%Y-%m-%d %H:%M:%S") > timedelta(minutes=15):
             res = "Hey! Welcome to the Just One Chesed ChesedMatch ChatBot. \n" \
                "Please answer a few questions so we can help you the best we can." \
