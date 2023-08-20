@@ -52,7 +52,7 @@ def messages():
     if phone_number in phone_col:
         idx = phone_col.index(phone_number)
         last_active = sheet.cell(idx, 2).value
-        if datetime.now() - datetime.strptime(last_active, "%Y-%m-%d %H:%M:%S%f") > timedelta(minutes=15):
+        if datetime.now() - datetime.strptime(last_active, "%Y-%m-%d %H:%M:%S") > timedelta(minutes=15):
             res = "Hey! Welcome to the Just One Chesed ChesedMatch ChatBot. \n" \
                "Please answer a few questions so we can help you the best we can." \
                " You can write 'start over' at any point to go back to the main menu. \n" \
@@ -63,9 +63,15 @@ def messages():
             res = ''
             for r in range(len(resp)):
                 res += resp[r]['text']
-        sheet.update_cell(idx, 2, datetime.now())
+        now = str(datetime.now())
+        index = now.find('.')
+        current_time = now[:index]
+        sheet.update_cell(idx, 2, current_time)
     else:
-        sheet.insert_row([phone_number, str(datetime.now())], values + 1)
+        now = str(datetime.now())
+        index = now.find('.')
+        current_time = now[:index]
+        sheet.insert_row([phone_number, current_time], values + 1)
         rc = RasaRestClient(user)
         resp = rc.send_message(message)
         res = ""
