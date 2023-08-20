@@ -8,12 +8,24 @@ from dotenv import load_dotenv
 import pandas as pd
 import pickle
 from datetime import date, datetime, time, timedelta
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 
 app = Flask(__name__, instance_relative_config=False)
 
 application = app
 
+
+scope = [
+    'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/drive.file'
+    ]
+file_name = 'jocchatbot-7fdc3c134776.json'
+creds = ServiceAccountCredentials.from_json_keyfile_name(file_name,scope)
+client = gspread.authorize(creds)
+
+sheet = client.open('JOC Chatbot Users').sheet1
 
 @app.route('/', methods=['GET'])
 def about():
@@ -35,11 +47,11 @@ def messages():
     user = User
     user.phone_number = args.get('From')
     phone_number = args.get('From')
-    with open('JOCChatbotMiddleman/last_active.pkl', 'rb') as handle:
-        df = pickle.load(handle)
-    if phone_number in df['phone#']:
-        idx = df['phone#'].get_loc(phone_number)
-        last_active = df['last_active'][idx]
+    phone_col = sheet.col_values(1)
+    values = len(phone_col)
+    if phone_number in phone_col:
+        idx = phone_col.index(phone_number)
+        last_active = sheet.cell(idx, 2)
         if datetime.now() - last_active > timedelta(minutes=15):
             res = "Hey! Welcome to the Just One Chesed ChesedMatch ChatBot. \n" \
                "Please answer a few questions so we can help you the best we can." \
@@ -51,17 +63,15 @@ def messages():
             res = ''
             for r in range(len(resp)):
                 res += resp[r]['text']
-        df['last_active'][idx] = datetime.now()
+        sheet.update_cell(idx, 2, datetime.now())
     else:
-        df.loc[len(df.index)] = [phone_number, datetime.now()]
+        sheet.insert_row([phone_number, datetime.now()],values + 1)
         rc = RasaRestClient(user)
         resp = rc.send_message(message)
         res = ""
         for r in range(len(resp)):
             res += resp[r]['text']
 
-    with open('last_active.pkl', 'wb') as handle:
-        pickle.dump(df, handle)
 
     response = MessagingResponse()
     response.message(str(res))
